@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.xml.stream.events.StartDocument;
 import java.awt.*;
 
 public class GameFrame extends JFrame{
@@ -8,17 +9,22 @@ public class GameFrame extends JFrame{
         setTitle("2048");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setLayout(new BorderLayout(10, 10));
 
-        GamePanel panel1 = new GamePanel();
-        JPanel panel2 = new JPanel();
+        JPanel mainPanel = new JPanel();
+        add(mainPanel);
+        GamePanel grid = new GamePanel();
+        board board = new board(grid);
 
-        panel2.setPreferredSize(new Dimension(100,100));
-        panel1.setBorder(new EmptyBorder(10, 10, 10, 10));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(board.getBoard());
+        mainPanel.add(Box.createVerticalStrut(10));
 
-        add(panel1, BorderLayout.SOUTH);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        mainPanel.add(grid);
+        mainPanel.add(Box.createVerticalStrut(10));
+
+        mainPanel.setBackground(new Color(0xE6D7CD));
         pack();
-        //setSize(600,600);
         setVisible(true);
     }
 }
