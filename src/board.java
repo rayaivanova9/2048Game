@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class board {
     private JPanel board;
@@ -12,10 +13,18 @@ public class board {
     private JButton startGame;
 
     private GamePanel gamePanel;
+    public void updateScore() {
+        if (scoreValue != null && gamePanel != null) {
+            scoreValue.setText(String.valueOf(gamePanel.getScore()));
+        }
+    }
+
+
 
     public void drawTiles (Graphics g, int[][] mat) {
         Graphics2D g2 = (Graphics2D) g;
         GamePanel GamePanel = new GamePanel();
+
         Tile Tile = new Tile();
         mat = GamePanel.mat;
         for(int i=0; i<4; i++){
@@ -36,16 +45,26 @@ public class board {
 
     public board(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        gamePanel.setScoreLabel(scoreValue);
         board.setBackground(new Color(0xE6D7CD));
-
+        SwingUtilities.invokeLater(() -> gamePanel.requestFocusInWindow());
+        startGame.setFocusable(false);
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gamePanel.resetBoard();
                 gamePanel.spawn();
                 gamePanel.repaint();
+                scoreValue.setText("0"); // reset score
+                gamePanel.requestFocusInWindow(); // regain key focus
+                //startGame.setEnabled(false);
+
 
             }
+
+
+
+
         });
     }
 
