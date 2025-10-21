@@ -2,14 +2,14 @@ import javax.swing.*;
 import java.util.Random;
 
 public class Tile {
+
     private final int SIZE = 100;
-
     Random rand = new Random();
-
 
     public int getValue(){
         int number = rand.nextInt(100);
         int value;
+
         if(number < 51){
             value = 2;
         } else if(number < 81){
@@ -19,6 +19,7 @@ public class Tile {
         }
         return value;
     }
+
     public void setValue(int value){
 
         JLabel label = new JLabel();
@@ -30,6 +31,4 @@ public class Tile {
         int color = getValue();
 
     }
-
-
 }

@@ -10,14 +10,17 @@ public class GamePanel extends JPanel {
     private final int TILE_COUNT = 4;
     private final int HEIGHT = GAP + (TILE_SIZE + GAP)*TILE_COUNT;
     private final int WIDTH = GAP + (TILE_SIZE + GAP)*TILE_COUNT;
+
     Tile Tile = new Tile();
     public int[][] mat = new int[4][4];
+
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(new Color(0xbbada0));
     }
 
     public int score;
+
     @Override
     public void paint(Graphics g) {
         super.paintComponent(g);
@@ -30,14 +33,16 @@ public class GamePanel extends JPanel {
                 int y = GAP + i * (TILE_SIZE + GAP);
                 g2d.setColor(new Color(0xcdc1b4));
                 g2d.fillRoundRect(x, y, TILE_SIZE, TILE_SIZE, 10, 10);
+
                 int value = mat[i][j];
+
                 if (value != 0){
                     g2d.setColor(Color.black);
-                    g2d.setFont(new Font("Arial", Font.BOLD, 24));
+                    g2d.setFont(new Font("Droid Sans", Font.BOLD, 30));
                     String text = String.valueOf(value);
                     FontMetrics fm = g2d.getFontMetrics();
                     int numX = x + (TILE_SIZE - fm.stringWidth(text)) / 2;
-                    int numY = y + (TILE_SIZE + fm.getAscent()) / 2 - 8;
+                    int numY = y + (TILE_SIZE + fm.getAscent()) / 2 - 5;
                     g2d.drawString(text, numX, numY);
                 }
             }
@@ -47,13 +52,15 @@ public class GamePanel extends JPanel {
         int tries = 30;
         Random rand = new Random();
         int numOfTiles = rand.nextInt(2) + 1;
+
         for (int j = 0; j < numOfTiles; j++){
             for(int i =0; i<tries; i++){
-                if(mat[rand.nextInt(4)][rand.nextInt(4)] == 0){
-                    mat[rand.nextInt(4)][rand.nextInt(4)] = Tile.getValue();
+                int row = rand.nextInt(4);
+                int col = rand.nextInt(4);
+
+                if(mat[row][col] == 0){
+                    mat[row][col] = Tile.getValue();
                     break;
-                } else {
-                    tries++;
                 }
             }
         }
@@ -66,10 +73,12 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
     public void shiftUp(){
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             int border = 0;
-            for(int j = 0; j < 4; j++){
+
+            for (int j = 0; j < 4; j++) {
                 if(mat[i][j] != 0){
                     int initial = mat[border][j];
                     int compare = mat[i][j];
@@ -85,6 +94,7 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
     public void shiftDown(){
         for(int i = 0; i < 4; i++){
             int border = 3;
@@ -104,6 +114,7 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
     public void shiftRight(){
         for(int i = 0; i < 4; i++){
             int border = 3;
@@ -123,6 +134,7 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
     public void shiftLeft(){
         for(int i = 0; i < 4; i++){
             int border = 0;

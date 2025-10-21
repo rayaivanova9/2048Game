@@ -14,10 +14,12 @@ public class board {
     private GamePanel gamePanel;
 
     public void drawTiles (Graphics g, int[][] mat) {
+
         Graphics2D g2 = (Graphics2D) g;
         GamePanel GamePanel = new GamePanel();
         Tile Tile = new Tile();
         mat = GamePanel.mat;
+
         for(int i=0; i<4; i++){
             for(int j=0; j<4; j++){
                 if(mat[i][j] == 0){
