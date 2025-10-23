@@ -12,7 +12,7 @@ public class Tile {
 
         if(number < 51){
             value = 2;
-        } else if(number < 81){
+        } else if(number < 91){
             value = 4;
         } else {
             value = 8;
