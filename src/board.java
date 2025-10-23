@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class board {
+public class board extends JPanel{
     private JPanel board;
     private JLabel scoreLabel;
     private JLabel scoreValue;
@@ -54,12 +54,14 @@ public class board {
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                startGame.setEnabled(false);
                 gamePanel.resetBoard();
                 gamePanel.spawn();
                 gamePanel.repaint();
                 scoreValue.setText("0"); // reset score
                 gamePanel.requestFocusInWindow(); // regain key focus
-                //startGame.setEnabled(false);
+
+
 
 
             }
@@ -68,6 +70,7 @@ public class board {
 
 
         });
+        gamePanel.setOnGameOver(() -> startGame.setEnabled(true));
     }
 
     public JPanel getBoard() {

@@ -12,6 +12,8 @@ public class GamePanel extends JPanel {
     private final int WIDTH = GAP + (TILE_SIZE + GAP)*TILE_COUNT;
     Tile Tile = new Tile();
     public int[][] mat = new int[4][4];
+    private Runnable onGameOver;
+
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(new Color(0xbbada0));
@@ -24,13 +26,82 @@ public class GamePanel extends JPanel {
 
     private int score = 0;
 
+
+    public void setBoard(board b) {
+        this.boardRef = b;
+    }
+
+
     public int getScore() {
         return score;
     }
+
+    public void setOnGameOver(Runnable callback) {
+        this.onGameOver = callback;
+    }
+
     public void setScoreLabel(JLabel label) {
         this.scoreValue = label;
         if (scoreValue != null) scoreValue.setText(String.valueOf(score));
     }
+
+
+    public void setColorText(Graphics g2d, int value) {
+        if (value==2){
+            g2d.setColor(new Color(0x776E65));
+            g2d.setFont(new Font("Arial", Font.BOLD, 36));
+        } else if (value==4){
+            g2d.setColor(new Color(0x776E65));
+            g2d.setFont(new Font("Arial", Font.BOLD, 36));
+        } else if (value==8){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 36));
+        } else if (value==16){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 36));
+        } else if (value==32){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 36));
+        } else if (value==64){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 36));
+        } else if (value==128){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 30));
+        } else if (value==256){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 30));
+        } else if (value==512){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 30));
+        } else if (value==1024){
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 24));
+        } else if (value==2048){
+            g2d.setColor(new Color(0x776E65));
+            g2d.setFont(new Font("Arial", Font.BOLD, 24));
+        } else {
+            g2d.setColor(new Color(0xF9F6F2));
+            g2d.setFont(new Font("Arial", Font.BOLD, 24));
+        }
+
+    }
+
+    public void setColorTile(Graphics g2d, int value) {
+        if (value==2){ g2d.setColor(new Color(0xEEE4DA));}
+        else if (value==4){g2d.setColor(new Color(0xEDE0C8));}
+        else if(value==8){g2d.setColor(new Color(0xF2B179));}
+        else if(value==16){g2d.setColor(new Color(0xF59563));}
+        else if(value==32){g2d.setColor(new Color(0xF67C5F));}
+        else if(value==64){g2d.setColor(new Color(0xF65E3B));}
+        else if(value==128){g2d.setColor(new Color(0xEDCF72));}
+        else if(value==256){g2d.setColor(new Color(0xEDCC61));}
+        else if(value==512){g2d.setColor(new Color(0xEDC850));}
+        else if(value==1024){g2d.setColor(new Color(0xEDC53F));}
+        else if(value==2048){g2d.setColor(new Color(0xEDC22E));}
+        else {g2d.setColor(new Color(0xEDC22E));}
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paintComponent(g);
@@ -41,21 +112,42 @@ public class GamePanel extends JPanel {
             for (int j = 0; j < TILE_COUNT; j++) {
                 int x = GAP + j * (TILE_SIZE + GAP);
                 int y = GAP + i * (TILE_SIZE + GAP);
-                g2d.setColor(new Color(0xcdc1b4));
-                g2d.fillRoundRect(x, y, TILE_SIZE, TILE_SIZE, 10, 10);
+
                 int value = mat[i][j];
                 if (value != 0){
-                    g2d.setColor(Color.black);
-                    g2d.setFont(new Font("Arial", Font.BOLD, 24));
-                    String text = String.valueOf(value);
+                    setColorTile(g2d, value);
+                    g2d.fillRoundRect(x, y, TILE_SIZE, TILE_SIZE, 10, 10);
+                    setColorText(g2d, value);
                     FontMetrics fm = g2d.getFontMetrics();
+                    String text = String.valueOf(value);
                     int numX = x + (TILE_SIZE - fm.stringWidth(text)) / 2;
                     int numY = y + (TILE_SIZE + fm.getAscent()) / 2 - 8;
                     g2d.drawString(text, numX, numY);
+                } else {
+                    g2d.setColor(new Color(0xcdc1b4));
+                    g2d.fillRoundRect(x, y, TILE_SIZE, TILE_SIZE, 10, 10);
                 }
             }
         }
     }
+
+    private int[][] copyMatrix(int[][] original) {
+        int[][] copy = new int[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            copy[i] = original[i].clone();
+        }
+        return copy;
+    }
+
+    private boolean areDifferent(int[][] a, int[][] b) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (a[i][j] != b[i][j]) return true;
+            }
+        }
+        return false;
+    }
+
     public void spawn() {
         Random rand = new Random();
         int tries = 30;
@@ -74,6 +166,8 @@ public class GamePanel extends JPanel {
                 mat[i][j] = 0;
             }
         }
+        score = 0;
+        if (scoreValue != null) scoreValue.setText("0");
 
     }
     public void shiftUp() {
@@ -208,48 +302,59 @@ public class GamePanel extends JPanel {
     }
     private board boardRef;
 
-    public void setBoard(board b) {
-        this.boardRef = b;
-    }
+
+
     private void setupKeyListener() {
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent keyEvent){
+            public void keyPressed(KeyEvent keyEvent) {
                 int key = keyEvent.getKeyCode();
-                if (keyEvent.getKeyChar() == 'w' || key == KeyEvent.VK_UP) {
+                int[][] before = copyMatrix(mat);
 
+                if (keyEvent.getKeyChar() == 'w' || key == KeyEvent.VK_UP) {
                     shiftUp();
-                    spawn();
-                    repaint();
-                    test();
-                    if (boardRef != null) boardRef.updateScore();
-                    System.out.println("pressed up");
                 } else if (keyEvent.getKeyChar() == 'a' || key == KeyEvent.VK_LEFT) {
                     shiftLeft();
-                    spawn();
-                    repaint();
-                    test();
-                    if (boardRef != null) boardRef.updateScore();
-                    System.out.println("pressed left");
                 } else if (keyEvent.getKeyChar() == 's' || key == KeyEvent.VK_DOWN) {
                     shiftDown();
-                    spawn();
-                    repaint();
-                    test();
-                    if (boardRef != null) boardRef.updateScore();
-                    System.out.println("pressed down");
                 } else if (keyEvent.getKeyChar() == 'd' || key == KeyEvent.VK_RIGHT) {
                     shiftRight();
+                }
+
+                if (areDifferent(before, mat)) {
                     spawn();
                     repaint();
-                    test();
                     if (boardRef != null) boardRef.updateScore();
-                    System.out.println("pressed right");
+                    if (isGameOver()) {
+                        JOptionPane.showMessageDialog(GamePanel.this, "Game Over! Final score: " + score);
+                        if (onGameOver != null) {
+                            onGameOver.run(); // re-enable Start Game button
+                        }
+                    }
                 }
             }
         });
-
     }
+    private boolean isGameOver() {
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mat[i][j] == 0) return false;
+            }
+        }
+
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                int current = mat[i][j];
+                if (i < 3 && mat[i + 1][j] == current) return false;
+                if (j < 3 && mat[i][j + 1] == current) return false;
+            }
+        }
+
+        return true;
+    }
+
 
 
 
