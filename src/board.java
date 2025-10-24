@@ -11,7 +11,7 @@ public class board {
     private JButton viewHighScoresButton;
     private JButton startGame;
     private JButton logInButton;
-    private JLabel nameField;
+    private static JLabel nameField;
     private int numGames = 0;
 
     private GamePanel gamePanel;

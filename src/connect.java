@@ -39,7 +39,24 @@ public class connect {
         }
     }
 
-    public static void highScore (int score, String username) {
-        String query = "SELECT"
+    public static void highScore (int score) {
+        String username = board.getUsername();
+        String query = "SELECT score FROM high_scores WHERE username LIKE ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int high_score = rs.getInt(1);
+                System.out.println(score + " " + high_score);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL Error.");
+        }
     }
 }
