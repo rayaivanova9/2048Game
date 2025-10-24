@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class board {
     private JPanel board;
@@ -11,6 +10,9 @@ public class board {
     private JLabel title;
     private JButton viewHighScoresButton;
     private JButton startGame;
+    private JButton logInButton;
+    private JLabel nameField;
+    private int numGames = 0;
 
     private GamePanel gamePanel;
     public void updateScore() {
@@ -18,8 +20,6 @@ public class board {
             scoreValue.setText(String.valueOf(gamePanel.getScore()));
         }
     }
-
-
 
     public void drawTiles (Graphics g, int[][] mat) {
 
@@ -51,26 +51,58 @@ public class board {
         board.setBackground(new Color(0xE6D7CD));
         SwingUtilities.invokeLater(() -> gamePanel.requestFocusInWindow());
         startGame.setFocusable(false);
+
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (numGames == 0) {
+                    String username = JOptionPane.showInputDialog("Enter your username:");
+                    logIn(username);
+                    nameField.setText(username);
+                    numGames++;
+                }
+
                 gamePanel.resetBoard();
                 gamePanel.spawn();
                 gamePanel.repaint();
                 scoreValue.setText("0"); // reset score
                 gamePanel.requestFocusInWindow(); // regain key focus
                 //startGame.setEnabled(false);
-
-
             }
+        });
 
-
-
-
+        logInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = JOptionPane.showInputDialog("Enter your username:");
+                logIn(username);
+                nameField.setText(username);
+            }
         });
     }
 
     public JPanel getBoard() {
         return board;
+    }
+
+    public static void logIn(String username) {
+        String nameQuery = "SELECT * FROM high_scores WHERE username LIKE ?";
+
+        if (!username.isEmpty()) {
+            if (connect.getRowCount(nameQuery, username) == -1) {
+                System.out.println("SQL Error.");
+            } else if (connect.getRowCount(nameQuery, username) == 0) {
+                String newUsernameQuery = "INSERT INTO high_scores (username, score) VALUES (?, 0)";
+                connect.getName(newUsernameQuery, username);
+            } else {
+
+            }
+        } else {
+
+        }
+    }
+
+    public static String getUsername() {
+        return nameField.getText();
     }
 }
