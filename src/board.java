@@ -64,7 +64,6 @@ public class board {
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 gamePanel.resetBoard();
                 gamePanel.spawn();
                 gamePanel.repaint();
