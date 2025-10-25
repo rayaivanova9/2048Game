@@ -27,6 +27,11 @@ public class GamePanel extends JPanel {
     public int getScore() {
         return score;
     }
+
+    public void resetScore() {
+        score = 0;
+    }
+
     public void setScoreLabel(JLabel label) {
         this.scoreValue = label;
         if (scoreValue != null) scoreValue.setText(String.valueOf(score));
@@ -106,6 +111,7 @@ public class GamePanel extends JPanel {
         }
         if (scoreValue != null) {
             scoreValue.setText(String.valueOf(score));
+            connect.highScore(Integer.parseInt(scoreValue.getText()));
         }
     }
     public void shiftDown() {
@@ -138,6 +144,7 @@ public class GamePanel extends JPanel {
         }
         if (scoreValue != null) {
             scoreValue.setText(String.valueOf(score));
+            connect.highScore(Integer.parseInt(scoreValue.getText()));
         }
     }
     public void shiftRight() {
@@ -167,6 +174,7 @@ public class GamePanel extends JPanel {
         }
         if (scoreValue != null) {
             scoreValue.setText(String.valueOf(score));
+            connect.highScore(Integer.parseInt(scoreValue.getText()));
         }
     }
     public void shiftLeft() {
@@ -196,6 +204,7 @@ public class GamePanel extends JPanel {
         }
         if (scoreValue != null) {
             scoreValue.setText(String.valueOf(score));
+            connect.highScore(Integer.parseInt(scoreValue.getText()));
         }
     }
     private void test(){

@@ -4,6 +4,7 @@ import javax.xml.stream.events.StartDocument;
 import java.awt.*;
 
 public class GameFrame extends JFrame{
+    static board board;
 
     public GameFrame() {
         setTitle("2048");
@@ -13,7 +14,7 @@ public class GameFrame extends JFrame{
         JPanel mainPanel = new JPanel();
         add(mainPanel);
         GamePanel grid = new GamePanel();
-        board board = new board(grid);
+        board = new board(grid);
 
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(board.getBoard());

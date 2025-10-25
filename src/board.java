@@ -11,14 +11,19 @@ public class board {
     private JButton viewHighScoresButton;
     private JButton startGame;
     private JButton logInButton;
-    private static JLabel nameField;
-    private int numGames = 0;
-
+    private JLabel nameField;
+    private JLabel highScoreLabel;
+    private String username = "";
     private GamePanel gamePanel;
+
     public void updateScore() {
         if (scoreValue != null && gamePanel != null) {
             scoreValue.setText(String.valueOf(gamePanel.getScore()));
         }
+    }
+
+    public static void setNewHighScore(int score) {
+        GameFrame.board.highScoreLabel.setText(String.valueOf(score));
     }
 
     public void drawTiles (Graphics g, int[][] mat) {
@@ -51,22 +56,21 @@ public class board {
         board.setBackground(new Color(0xE6D7CD));
         SwingUtilities.invokeLater(() -> gamePanel.requestFocusInWindow());
         startGame.setFocusable(false);
+        username = JOptionPane.showInputDialog("Enter your username:");
+        logIn(username);
+        nameField.setText(username);
+        highScoreLabel.setText(String.valueOf(connect.getHighScore(username)));
 
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (numGames == 0) {
-                    String username = JOptionPane.showInputDialog("Enter your username:");
-                    logIn(username);
-                    nameField.setText(username);
-                    numGames++;
-                }
 
                 gamePanel.resetBoard();
                 gamePanel.spawn();
                 gamePanel.repaint();
                 scoreValue.setText("0"); // reset score
-                gamePanel.requestFocusInWindow(); // regain key focus
+                gamePanel.requestFocusInWindow();// regain key focus
+                gamePanel.resetScore();
                 //startGame.setEnabled(false);
             }
         });
@@ -102,7 +106,7 @@ public class board {
         }
     }
 
-    public static String getUsername() {
-        return nameField.getText();
+    public String getUsername() {
+        return username;
     }
 }
