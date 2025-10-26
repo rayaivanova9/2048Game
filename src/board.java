@@ -18,7 +18,13 @@ public class board extends JPanel{
             scoreValue.setText(String.valueOf(gamePanel.getScore()));
         }
     }
-
+    public void startNewGame() {
+        gamePanel.resetBoard();
+        gamePanel.spawn();
+        gamePanel.spawn();
+        gamePanel.repaint();
+        gamePanel.requestFocusInWindow();
+    }
 
 
     public void drawTiles (Graphics g, int[][] mat) {
