@@ -94,7 +94,7 @@ public class connect {
     }
 
     public static ArrayList<String[]> executeTable() {
-        String query = "SELECT username, score FROM high_scores";
+        String query = "SELECT username, score FROM high_scores ORDER BY score DESC";
         ArrayList<String[]> results = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
