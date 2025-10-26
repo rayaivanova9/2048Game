@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
     public int[][] mat = new int[4][4];
     private int[][] pendingMatrix = null;
     private int score = 0;
-    private boolean isAnimating = false;
+
     private Tile Tile = new Tile();
     private JLabel scoreValue;
     private board boardRef;
@@ -316,8 +316,6 @@ public class GamePanel extends JPanel {
             return;
         }
 
-        int[][] oldMatrix = copyMatrix(mat);
-
         // Create animations for tiles that will move
         for (int j = 0; j < 4; j++) {
             int border = 0;
@@ -395,9 +393,6 @@ public class GamePanel extends JPanel {
         if (!canShiftDown()) {
             return;
         }
-
-        int[][] oldMatrix = copyMatrix(mat);
-
         // Create animations for tiles that will move
         for (int j = 0; j < 4; j++) {
             int border = 3;
@@ -475,9 +470,6 @@ public class GamePanel extends JPanel {
         if (!canShiftLeft()) {
             return;
         }
-
-        int[][] oldMatrix = copyMatrix(mat);
-
         // Create animations for tiles that will move
         for (int i = 0; i < 4; i++) {
             int border = 0;
@@ -553,8 +545,6 @@ public class GamePanel extends JPanel {
             return;
         }
 
-        int[][] oldMatrix = copyMatrix(mat);
-
         // Create animations for tiles that will move
         for (int i = 0; i < 4; i++) {
             int border = 3;
@@ -627,7 +617,6 @@ public class GamePanel extends JPanel {
 
     // ==================== ANIMATION METHODS ====================
     private void animateSpawn(AnimatedTile anim, Runnable onComplete) {
-        isAnimating = true;
         int steps = 10;
         double stepSize = (1.0 - anim.scale) / steps;
         Timer timer = new Timer(8, null);
@@ -641,7 +630,6 @@ public class GamePanel extends JPanel {
                 ((Timer) e.getSource()).stop();
                 animations.remove(anim);
                 activeAnimations.remove(timer);
-                isAnimating = false;
                 repaint();
 
                 if (onComplete != null) {
@@ -793,7 +781,6 @@ public class GamePanel extends JPanel {
                 }
                 activeAnimations.clear();
                 animations.clear();
-                isAnimating = false;
 
                 // Handle direction input
                 if (keyEvent.getKeyChar() == 'w' || key == KeyEvent.VK_UP) {
