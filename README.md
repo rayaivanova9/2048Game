@@ -27,4 +27,4 @@ Raya Ivanova and Maris Krumins
 - Press Start Button to start the game
 - By pressing the arrow keys or W, A, S, D keys, shift the tiles to merge them
 - Try to get to 2048
-- Press View Highscores to check the highest score of a user and your best attempt
+- Press View Highscores to check the highest score of other users and your best attempt
