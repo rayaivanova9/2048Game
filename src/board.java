@@ -56,7 +56,8 @@ public class board {
         board.setBackground(new Color(0xE6D7CD));
         SwingUtilities.invokeLater(() -> gamePanel.requestFocusInWindow());
         startGame.setFocusable(false);
-        username = JOptionPane.showInputDialog("Enter your username:");
+        username = Main.form.getUsername();
+        Main.form.dispose();
         logIn(username);
         nameField.setText(username);
         highScoreLabel.setText(String.valueOf(connect.getHighScore(username)));
@@ -80,6 +81,21 @@ public class board {
                 String username = JOptionPane.showInputDialog("Enter your username:");
                 logIn(username);
                 nameField.setText(username);
+                gamePanel.resetBoard();
+                gamePanel.spawn();
+                gamePanel.repaint();
+                scoreValue.setText("0"); // reset score
+                gamePanel.requestFocusInWindow();// regain key focus
+                gamePanel.resetScore();
+                highScoreLabel.setText(String.valueOf(connect.getHighScore(username)));
+            }
+        });
+
+        viewHighScoresButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                SwingUtilities.invokeLater(highScores::new);
             }
         });
     }

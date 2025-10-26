@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class connect {
@@ -90,5 +91,35 @@ public class connect {
             System.out.println("SQL Error.");
         }
         return -1;
+    }
+
+    public static ArrayList<String[]> executeTable() {
+        String query = "SELECT username, score FROM high_scores";
+        ArrayList<String[]> results = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // to add columns automatically
+            for (int i = 1; i <= columnCount; i++) {
+                    highScores.model.addColumn(metaData.getColumnName(i));
+            }
+
+            while (rs.next()) {
+                String[] row = new String[columnCount];
+                for (int i = 0; i < columnCount; i++) {
+                    row[i] = rs.getString(i + 1);
+                }
+                results.add(row);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+        return results;
     }
 }
