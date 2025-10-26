@@ -14,4 +14,6 @@ public class AnimatedTile {
         this.x = x;
         this.y = y;
     }
+
+
 }
