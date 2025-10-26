@@ -26,6 +26,17 @@ public class board {
         GameFrame.board.highScoreLabel.setText(String.valueOf(score));
     }
 
+    public void startNewGame() {
+        gamePanel.resetBoard();
+        gamePanel.spawn();
+        gamePanel.spawn();
+        gamePanel.repaint();
+        scoreValue.setText("0"); // reset score
+        gamePanel.requestFocusInWindow();// regain key focus
+        gamePanel.resetScore();
+    }
+
+
     public void drawTiles (Graphics g, int[][] mat) {
 
         Graphics2D g2 = (Graphics2D) g;
@@ -79,15 +90,17 @@ public class board {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = JOptionPane.showInputDialog("Enter your username:");
-                logIn(username);
-                nameField.setText(username);
-                gamePanel.resetBoard();
-                gamePanel.spawn();
-                gamePanel.repaint();
-                scoreValue.setText("0"); // reset score
-                gamePanel.requestFocusInWindow();// regain key focus
-                gamePanel.resetScore();
-                highScoreLabel.setText(String.valueOf(connect.getHighScore(username)));
+                if (username != null) {
+                    logIn(username);
+                    nameField.setText(username);
+                    gamePanel.resetBoard();
+                    gamePanel.spawn();
+                    gamePanel.repaint();
+                    scoreValue.setText("0"); // reset score
+                    gamePanel.requestFocusInWindow();// regain key focus
+                    gamePanel.resetScore();
+                    highScoreLabel.setText(String.valueOf(connect.getHighScore(username)));
+                }
             }
         });
 
