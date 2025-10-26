@@ -16,7 +16,9 @@ public class GamePanel extends JPanel {
     public int[][] mat = new int[4][4];
     private int[][] pendingMatrix = null;
     private int score = 0;
-
+    private boolean isAnimating = false;
+    private boolean hasWon = false;
+    private boolean continueAfterWin = false;
     private Tile Tile = new Tile();
     private JLabel scoreValue;
     private board boardRef;
@@ -178,6 +180,8 @@ public class GamePanel extends JPanel {
             }
         }
         score = 0;
+        hasWon = false;
+        continueAfterWin = false;
         if (scoreValue != null) scoreValue.setText("0");
     }
 
@@ -730,8 +734,8 @@ public class GamePanel extends JPanel {
         animations.clear();
         repaint();
 
-        // Spawn new tile after merge animations complete, then check game over
         spawn(() -> {
+            checkWinCondition();
             if (isGameOver()) {
                 JOptionPane.showMessageDialog(GamePanel.this, "Game Over! Final score: " + score);
                 if (onGameOver != null) {
@@ -739,6 +743,53 @@ public class GamePanel extends JPanel {
                 }
             }
         });
+    }
+
+    private void checkWinCondition() {
+        if (hasWon || continueAfterWin) {
+            return;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mat[i][j] == 2048) {
+                    hasWon = true;
+                    showWinDialog();
+                    return;
+                }
+            }
+        }
+    }
+
+    private void showWinDialog() {
+        String[] options = {"Continue Playing", "New Game"};
+        int choice = JOptionPane.showOptionDialog(
+                GamePanel.this,
+                "Congratulations! You reached 2048!\n\nScore: " + score,
+                "You Win!",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (choice == 0) {
+            // Continue playing
+            continueAfterWin = true;
+        } else if (choice == 1) {
+            // Start new game
+            if (boardRef != null) {
+                boardRef.startNewGame();
+            } else {
+                resetBoard();
+                spawn();
+                spawn();
+                repaint();
+            }
+        } else {
+            continueAfterWin = true;
+        }
     }
 
     // ==================== UTILITY METHODS ====================
