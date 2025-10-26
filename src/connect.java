@@ -7,7 +7,7 @@ public class connect {
     public static int getRowCount(String query, String username) {
         //String testQuery = "INSERT INTO high_scores (username, score) VALUES ('thebest', 4218688)";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
              PreparedStatement pstmt = connection.prepareStatement(query)) {
 
             pstmt.setString(1, username);
@@ -27,7 +27,7 @@ public class connect {
     }
 
     public static void getName(String query, String username) {
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
              PreparedStatement pstmt = connection.prepareStatement(query)) {
 
             pstmt.setString(1, username);
@@ -43,7 +43,7 @@ public class connect {
         String username = GameFrame.board.getUsername();
         String query = "SELECT score FROM high_scores WHERE username LIKE ?";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
              PreparedStatement pstmt = connection.prepareStatement(query)) {
 
             pstmt.setString(1, username);
@@ -79,7 +79,7 @@ public class connect {
     public static int getHighScore(String username) {
         String query = "SELECT score FROM high_scores WHERE username LIKE ?";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
              PreparedStatement pstmt = connection.prepareStatement(query)) {
 
             pstmt.setString(1, username);
@@ -97,7 +97,7 @@ public class connect {
         String query = "SELECT username, score FROM high_scores ORDER BY score DESC";
         ArrayList<String[]> results = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/20252711/IdeaProjects/2048Game/identifier.sqlite");
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
              PreparedStatement pstmt = connection.prepareStatement(query)) {
 
             ResultSet rs = pstmt.executeQuery();
